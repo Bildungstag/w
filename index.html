@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wissenswerkstatt – Weiterleitung</title>
+<script src="target.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; display: flex; flex-direction: column;
+         align-items: center; justify-content: center; min-height: 100vh;
+         background: linear-gradient(135deg, #047857 0%, #059669 100%);
+         color: #fff; text-align: center; padding: 20px; }
+  h1 { font-size: 24pt; margin-bottom: 12px; }
+  p { font-size: 13pt; opacity: 0.9; margin-bottom: 20px; max-width: 480px; }
+  .spinner { width: 40px; height: 40px; border: 5px solid rgba(255,255,255,.25);
+             border-top-color: #fff; border-radius: 50%;
+             animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .url { font-family: monospace; font-size: 10pt; opacity: 0.7; word-break: break-all;
+         max-width: 420px; margin-top: 12px; }
+  .error { background: rgba(255,255,255,.15); border-radius: 12px; padding: 16px;
+           max-width: 400px; margin-top: 12px; }
+</style>
+</head>
+<body>
+
+<h1>🔬 Wissenswerkstatt</h1>
+<p>Du wirst weitergeleitet …</p>
+<div class="spinner" id="spinner"></div>
+<div class="url" id="url-info"></div>
+
+<div class="error" id="error-box" style="display:none">
+  <p><strong>⚠️ Keine Verbindung möglich</strong></p>
+  <p style="font-size:10pt;margin-top:8px">
+    Die Wissenswerkstatt ist momentan nicht erreichbar.<br/>
+    Bitte den Workshopleiter informieren.
+  </p>
+</div>
+
+<script>
+// =========================================================================
+// Automatische Weiterleitung zur aktuellen Cloudflare-Tunnel-URL.
+// `window.__TARGET` wird vom tunnel_manager.py via GitHub-API aktuell
+// gehalten und zeigt immer auf den derzeit gültigen Tunnel.
+// =========================================================================
+
+(function() {
+  // Pfad ohne führenden Slash, z.B. "w/station/abc" oder "w/?token=xyz"
+  var fullPath = window.location.pathname.replace(/^\/+/, "");
+  var search = window.location.search;
+  var hash = window.location.hash;
+
+  // GitHub Pages served das Repo unter /REPONAME/, also z.B. /w/...
+  // Wir müssen diesen Prefix entfernen, damit der Pfad auf der
+  // Ziel-App korrekt ankommt (die App kennt den GitHub-Prefix nicht).
+  var pathParts = fullPath.split("/");
+  if (pathParts.length > 0 && pathParts[0] !== "") {
+    // Erstes Segment = Repo-Name, danach = echter Pfad
+    var realPath = pathParts.slice(1).join("/");
+  } else {
+    var realPath = "";
+  }
+
+  // target.js setzt window.__TARGET
+  var target = (typeof window.__TARGET === "string" && window.__TARGET.trim())
+    ? window.__TARGET.trim().replace(/\/+$/, "")
+    : null;
+
+  if (!target) {
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("error-box").style.display = "block";
+  } else {
+    // Ziel-URL bauen: target + Pfad + Query + Hash
+    var dest = target;
+    if (realPath) dest += "/" + realPath;
+    if (search) dest += search;
+    if (hash) dest += hash;
+
+    document.getElementById("url-info").textContent = "→ " + dest;
+    // Kurze Verzögerung, damit der Nutzer die Meldung sieht
+    setTimeout(function() {
+      window.location.href = dest;
+    }, 600);
+  }
+})();
+</script>
+
+</body>
+</html>
