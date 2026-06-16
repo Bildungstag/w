@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
 <title>Wissenswerkstatt – Weiterleitung</title>
-<script src="target.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; display: flex; flex-direction: column;
@@ -26,7 +26,7 @@
 <body>
 
 <h1>🔬 Wissenswerkstatt</h1>
-<p>Du wirst weitergeleitet …</p>
+<p id="status">Du wirst weitergeleitet …</p>
 <div class="spinner" id="spinner"></div>
 <div class="url" id="url-info"></div>
 
@@ -40,49 +40,66 @@
 
 <script>
 // =========================================================================
-// Automatische Weiterleitung zur aktuellen Cloudflare-Tunnel-URL.
-// `window.__TARGET` wird vom tunnel_manager.py via GitHub-API aktuell
-// gehalten und zeigt immer auf den derzeit gültigen Tunnel.
+// Stabiler Redirect zur aktuellen Cloudflare-Tunnel-URL.
+//
+// Diese Seite wird unter https://bildungstag.github.io/w/ ALS index.html UND
+// (für beliebige Unterpfade wie /w/station/<uuid>) als 404.html ausgeliefert.
+// GitHub Pages serviert 404.html für jeden nicht vorhandenen Pfad – dadurch
+// greift dieser Redirect auch für Deep-Links, nicht nur für den Root.
+//
+// Das Ziel steht in /w/target.js (window.__TARGET) und wird vom Server
+// (tunnel_manager.py) bei jedem Tunnel-Wechsel automatisch aktualisiert.
+// Wir laden target.js mit einem Cache-Buster, damit ein URL-Wechsel sofort
+// durchschlägt und NICHT vom GitHub-CDN-Cache (~10 min) blockiert wird.
 // =========================================================================
 
-(function() {
-  // Pfad ohne führenden Slash, z.B. "w/station/abc" oder "w/?token=xyz"
+(function () {
+  // GitHub Pages served dieses Repo unter /w/ — fester Prefix.
+  var REPO_PREFIX = "w";
+  var PLACEHOLDER = "platzhalter";
+
+  function showError() {
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("status").textContent = "";
+    document.getElementById("error-box").style.display = "block";
+  }
+
+  // Realen App-Pfad rekonstruieren: erstes Segment (Repo-Name) entfernen.
+  // Funktioniert für index.html (/w/) UND 404.html (/w/station/<uuid>),
+  // weil window.location immer den tatsächlich angefragten Pfad enthält.
   var fullPath = window.location.pathname.replace(/^\/+/, "");
+  var parts = fullPath.split("/");
+  var realPath = (parts[0] === REPO_PREFIX) ? parts.slice(1).join("/") : fullPath;
   var search = window.location.search;
   var hash = window.location.hash;
 
-  // GitHub Pages served das Repo unter /REPONAME/, also z.B. /w/...
-  // Wir müssen diesen Prefix entfernen, damit der Pfad auf der
-  // Ziel-App korrekt ankommt (die App kennt den GitHub-Prefix nicht).
-  var pathParts = fullPath.split("/");
-  if (pathParts.length > 0 && pathParts[0] !== "") {
-    // Erstes Segment = Repo-Name, danach = echter Pfad
-    var realPath = pathParts.slice(1).join("/");
-  } else {
-    var realPath = "";
-  }
+  function redirect() {
+    var target = (typeof window.__TARGET === "string" && window.__TARGET.trim())
+      ? window.__TARGET.trim().replace(/\/+$/, "")
+      : "";
 
-  // target.js setzt window.__TARGET
-  var target = (typeof window.__TARGET === "string" && window.__TARGET.trim())
-    ? window.__TARGET.trim().replace(/\/+$/, "")
-    : null;
+    // Kein Ziel oder noch der Platzhalter → Fehler statt Weiterleitung ins Leere.
+    if (!target || target.indexOf(PLACEHOLDER) !== -1) {
+      showError();
+      return;
+    }
 
-  if (!target) {
-    document.getElementById("spinner").style.display = "none";
-    document.getElementById("error-box").style.display = "block";
-  } else {
-    // Ziel-URL bauen: target + Pfad + Query + Hash
     var dest = target;
     if (realPath) dest += "/" + realPath;
     if (search) dest += search;
     if (hash) dest += hash;
 
     document.getElementById("url-info").textContent = "→ " + dest;
-    // Kurze Verzögerung, damit der Nutzer die Meldung sieht
-    setTimeout(function() {
-      window.location.href = dest;
-    }, 600);
+    setTimeout(function () { window.location.replace(dest); }, 400);
   }
+
+  // target.js cache-bustend nachladen (absoluter Pfad, da 404.html unter
+  // beliebigem Pfad ausgeliefert wird und relative URLs sonst brechen).
+  var s = document.createElement("script");
+  s.src = "/" + REPO_PREFIX + "/target.js?cb=" + Date.now();
+  s.onload = redirect;
+  s.onerror = showError;
+  document.head.appendChild(s);
 })();
 </script>
 
