@@ -1,1 +1,1 @@
-window.__TARGET = "https://returns-initiated-differential-mae.trycloudflare.com";
+window.__TARGET = "https://noble-drop-applications-results.trycloudflare.com";
