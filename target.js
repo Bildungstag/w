@@ -1,1 +1,1 @@
-window.__TARGET = "https://controls-coins-ahead-employment.trycloudflare.com";
+window.__TARGET = "https://gives-defence-reception-obituaries.trycloudflare.com";
