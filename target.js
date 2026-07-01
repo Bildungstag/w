@@ -1,1 +1,1 @@
-window.__TARGET = "https://gives-defence-reception-obituaries.trycloudflare.com";
+window.__TARGET = "https://suddenly-francisco-lines-xml.trycloudflare.com";
