@@ -1,1 +1,1 @@
-window.__TARGET = "https://walker-handled-rod-favor.trycloudflare.com";
+window.__TARGET = "https://rankings-promoting-trackbacks-rings.trycloudflare.com";
