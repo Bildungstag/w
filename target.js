@@ -1,1 +1,1 @@
-window.__TARGET = "https://recall-asbestos-comparisons-become.trycloudflare.com";
+window.__TARGET = "https://fits-indicators-tail-real.trycloudflare.com";
