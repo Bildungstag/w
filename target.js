@@ -1,1 +1,1 @@
-window.__TARGET = "https://rankings-promoting-trackbacks-rings.trycloudflare.com";
+window.__TARGET = "https://mechanical-manufacturers-august-pursuant.trycloudflare.com";
