@@ -1,1 +1,1 @@
-window.__TARGET = "https://intermediate-barbara-partner-propose.trycloudflare.com";
+window.__TARGET = "https://walker-handled-rod-favor.trycloudflare.com";
