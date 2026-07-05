@@ -1,1 +1,1 @@
-window.__TARGET = "https://circular-developers-membership-statute.trycloudflare.com";
+window.__TARGET = "https://rugs-veterinary-samba-bet.trycloudflare.com";
