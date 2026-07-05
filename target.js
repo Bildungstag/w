@@ -1,1 +1,1 @@
-window.__TARGET = "https://fits-indicators-tail-real.trycloudflare.com";
+window.__TARGET = "https://circular-developers-membership-statute.trycloudflare.com";
