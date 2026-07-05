@@ -1,1 +1,1 @@
-window.__TARGET = "https://rugs-veterinary-samba-bet.trycloudflare.com";
+window.__TARGET = "https://indication-incredible-adaptive-expenditure.trycloudflare.com";
