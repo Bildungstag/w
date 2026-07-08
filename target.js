@@ -1,1 +1,1 @@
-window.__TARGET = "https://indication-incredible-adaptive-expenditure.trycloudflare.com";
+window.__TARGET = "https://thinkpad-burton-prototype-cleveland.trycloudflare.com";
