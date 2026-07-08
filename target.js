@@ -1,1 +1,1 @@
-window.__TARGET = "https://thinkpad-burton-prototype-cleveland.trycloudflare.com";
+window.__TARGET = "https://pam-sprint-korea-prime.trycloudflare.com";
