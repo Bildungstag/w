@@ -1,1 +1,1 @@
-window.__TARGET = "https://probability-maintains-watched-pubs.trycloudflare.com";
+window.__TARGET = "https://fits-erp-sierra-dude.trycloudflare.com";
