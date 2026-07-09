@@ -1,1 +1,1 @@
-window.__TARGET = "https://epic-cos-abstract-annotation.trycloudflare.com";
+window.__TARGET = "https://probability-maintains-watched-pubs.trycloudflare.com";
