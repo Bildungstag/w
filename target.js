@@ -1,1 +1,1 @@
-window.__TARGET = "https://pam-sprint-korea-prime.trycloudflare.com";
+window.__TARGET = "https://nurses-shield-requested-interstate.trycloudflare.com";
