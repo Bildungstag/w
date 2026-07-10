@@ -1,1 +1,1 @@
-window.__TARGET = "https://fits-erp-sierra-dude.trycloudflare.com";
+window.__TARGET = "https://fast-hong-knight-appliances.trycloudflare.com";
