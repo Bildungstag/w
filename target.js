@@ -1,1 +1,1 @@
-window.__TARGET = "https://fast-hong-knight-appliances.trycloudflare.com";
+window.__TARGET = "https://share-disabilities-defend-specifies.trycloudflare.com";
