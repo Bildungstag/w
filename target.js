@@ -1,1 +1,1 @@
-window.__TARGET = "https://archive-phase-conference-polyphonic.trycloudflare.com";
+window.__TARGET = "https://hand-registrar-francis-disciplines.trycloudflare.com";
