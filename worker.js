@@ -1,13 +1,14 @@
 // =========================================================================
-// Cloudflare Pages Function: feste Adresse <projekt>.pages.dev für die
+// Cloudflare Worker: feste Adresse wissenswerkstatt.<konto>.workers.dev für die
 // Wissenswerkstatt (statt sichtbarer Weiterleitung über bildungstag.github.io/w).
 //
 // Jede Anfrage wird an den aktuellen Quick-Tunnel durchgereicht. Dessen Adresse
 // steht in /target.js, das tunnel_manager.py bei jedem Tunnelwechsel in dieses
-// Repo committet -> Cloudflare Pages baut automatisch neu (~1 Min.) und diese
-// Funktion liest den neuen Wert aus den eigenen statischen Dateien.
+// Repo committet -> Cloudflare (Workers Builds) deployt automatisch neu (~1 Min.)
+// und der Worker liest den neuen Wert aus seinen statischen Assets.
 //
-// GitHub Pages ignoriert diesen Ordner; dort greift weiter index.html/404.html.
+// GitHub Pages ignoriert worker.js/wrangler.jsonc; dort greift weiter
+// index.html/404.html. Konfiguration: wrangler.jsonc, .assetsignore.
 // =========================================================================
 
 const TUNNEL_RE = /https:\/\/[a-z0-9-]+\.trycloudflare\.com/;
@@ -57,7 +58,7 @@ function offline(request) {
   });
 }
 
-export async function onRequest({ request, env }) {
+async function handle(request, env) {
   const target = await readTarget(request, env);
   if (!target) return offline(request);
 
@@ -90,3 +91,5 @@ export async function onRequest({ request, env }) {
   }
   return res;
 }
+
+export default { fetch: handle };

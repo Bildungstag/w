@@ -1,0 +1,14 @@
+// Cloudflare Worker "wissenswerkstatt": Proxy auf den aktuellen Quick-Tunnel.
+// Deploy automatisch bei jedem Push auf main (Workers Builds, `npx wrangler deploy`).
+{
+  "name": "wissenswerkstatt",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    // Nur target.js wird gebraucht; der Worker liest es über das ASSETS-Binding.
+    "directory": ".",
+    "binding": "ASSETS",
+    // Jede Anfrage geht zuerst an den Worker, Assets sind nie direkt erreichbar.
+    "run_worker_first": true
+  }
+}
